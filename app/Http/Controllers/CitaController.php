@@ -60,4 +60,15 @@ class CitaController extends Controller
         $cit = DB::table('citas')->where('id',$id)->delete();
         return redirect()->route('citas.index');
     }
+    public function search(Request $request)
+    {
+        if($request){
+            $query = trim($request->get(key:'titulo'));
+            $cit = DB::table('citas')->where('name', 'LIKE', '%' . $query . '%')
+                ->orderBy('id', 'asc')
+                ->get();
+            
+            return view('citas.buscador', ['libros' => $cit, 'titulo' => $query]);
+        }
+    }
 }
